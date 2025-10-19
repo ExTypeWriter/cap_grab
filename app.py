@@ -2,6 +2,7 @@ from flask import Flask, request, jsonify
 from flask_cors import CORS
 import re
 import os
+import time
 from urllib.parse import urlparse, parse_qs
 from youtube_transcript_api import (
     YouTubeTranscriptApi,
@@ -10,10 +11,10 @@ from youtube_transcript_api import (
     VideoUnavailable,
 )
 
+request_cache = {}
+
 app = Flask(__name__)
 
-# Configure CORS to allow requests from your frontend
-# In production, replace '*' with your actual frontend URL
 ALLOWED_ORIGINS = os.environ.get('ALLOWED_ORIGINS', '*')
 CORS(app, origins=ALLOWED_ORIGINS.split(',') if ALLOWED_ORIGINS != '*' else '*')
 
